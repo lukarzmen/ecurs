@@ -1,30 +1,41 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 
+import Header from './Header';
+import CourseService from '@/services/CourseService';
+import Sidebar from './Sidebar';
 const App = () => {
+  const [content, setContent] = useState("")
+  const courseService = new CourseService();
+  const handleProfileSettingsSelected = () => {
+      
+  }
   return (
+    
     <View style={styles.container}>
       {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Header</Text>
-      </View>
+      <Header onProfileSettingsSelected={handleProfileSettingsSelected}></Header>
 
       {/* Main Content Area */}
       <View style={styles.mainContainer}>
         {/* Sidebar */}
-        <View style={styles.sidebar}>
-          <Text style={styles.sidebarText}>Sidebar</Text>
-        </View>
+        <Sidebar courseId="1" onLessonChanged={(lessonId: number) => {
+          const lessonContent = courseService.fetchCourseContent(lessonId)
+          console.log("dupa")
+          if (lessonContent) {
+            setContent(lessonContent);
+          }
+        }}></Sidebar>
 
         {/* Content */}
         <View style={styles.content}>
-          <Text style={styles.contentText}>Main Content Area</Text>
+          <Text style={styles.contentText}>{content}</Text>
         </View>
       </View>
 
       {/* Footer */}
       <View style={styles.footer}>
-        <Text style={styles.footerText}>Footer</Text>
+        <Text style={styles.footerText}>Platforma edukacyjna 2024</Text>
       </View>
     </View>
   );
