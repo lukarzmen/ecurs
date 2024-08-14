@@ -4,20 +4,23 @@ import { View, Text, StyleSheet, FlatList } from 'react-native';
 import Header from './Header';
 import CourseService from '@/services/CourseService';
 import Sidebar from './Sidebar';
+import UserProfileSettings from './UserProfileSettings';
 const App = () => {
   const [content, setContent] = useState("")
   const courseService = new CourseService();
+  const [modalVisible, setModalVisible] = useState(false);
   const handleProfileSettingsSelected = () => {
-      
+      setModalVisible(!modalVisible);
   }
   return (
     
     <View style={styles.container}>
       {/* Header */}
       <Header onProfileSettingsSelected={handleProfileSettingsSelected}></Header>
-
+     
       {/* Main Content Area */}
       <View style={styles.mainContainer}>
+      
         {/* Sidebar */}
         <Sidebar courseId="1" onLessonChanged={(lessonId: number) => {
           const lessonContent = courseService.fetchCourseContent(lessonId)
@@ -30,6 +33,7 @@ const App = () => {
         {/* Content */}
         <View style={styles.content}>
           <Text style={styles.contentText}>{content}</Text>
+          <UserProfileSettings onModalChanged={(val: boolean) => setModalVisible(val)} modalVisible={modalVisible}></UserProfileSettings>
         </View>
       </View>
 
